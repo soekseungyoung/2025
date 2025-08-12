@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import random
+import datetime
 
 # 확장된 사주 기반 직업 추천 함수
 def get_saju_recommendations(birth_date, birth_time):
@@ -52,8 +53,10 @@ st.markdown(
 
 st.write("<div style='text-align:center; font-size:18px;'>생년월일과 태어난 시간을 입력하면, 사주를 기반으로 당신의 숨겨진 적성과 직업을 알려드립니다.</div>", unsafe_allow_html=True)
 
-# 입력 받기
-birth_date = st.date_input("📅 생년월일 입력")
+# 입력 받기 (년도 제한 2000~2025)
+min_date = datetime.date(2000, 1, 1)
+max_date = datetime.date(2025, 12, 31)
+birth_date = st.date_input("📅 생년월일 입력", min_value=min_date, max_value=max_date)
 birth_time = st.time_input("⏰ 태어난 시간 입력")
 
 # 추천 받기 버튼
