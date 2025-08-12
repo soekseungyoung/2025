@@ -1,5 +1,6 @@
 import streamlit as st
 import time
+import random
 
 # MBTI별 적성, 직업, 이모지 데이터
 type_to_info = {
@@ -21,25 +22,33 @@ type_to_info = {
     "ENFJ 🌟": {"strengths": ["리더십", "공감", "사람을 동기부여"], "jobs": ["교사", "코치", "HR 전문가"]},
 }
 
-# 페이지 스타일 적용
+# 페이지 스타일 적용 (애니메이션 추가)
 st.markdown("""
     <style>
+        @keyframes gradientMove {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
         body {
-            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            background: linear-gradient(270deg, #ffecd2, #fcb69f, #ffdde1);
+            background-size: 600% 600%;
+            animation: gradientMove 10s ease infinite;
             color: #333;
             font-family: 'Segoe UI', sans-serif;
         }
         .stButton>button {
             background-color: #ff6f61;
             color: white;
-            border-radius: 10px;
-            font-size: 18px;
-            padding: 0.5em 1.5em;
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            font-size: 20px;
+            padding: 0.6em 1.8em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.4s ease;
         }
         .stButton>button:hover {
             background-color: #ff3b2e;
-            transform: scale(1.05);
+            transform: scale(1.1) rotate(1deg);
         }
         .stSelectbox label {
             font-size: 18px;
@@ -49,10 +58,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 제목 + 애니메이션 효과
-st.markdown("<h1 style='text-align:center; color:#ff6f61; animation: glow 1.5s ease-in-out infinite alternate;'>✨ MBTI 기반 적성 및 직업 추천 ✨</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center; color:#ff6f61; animation: pulse 2s infinite;'>✨ MBTI 기반 적성 및 직업 추천 ✨</h1>", unsafe_allow_html=True)
 
 # 선택 안내
-st.write("자신의 MBTI를 선택하면, 해당 성향에 맞는 잘하는 것들과 추천 직업을 예쁜 이모지와 함께 보여드립니다.")
+st.markdown("<p style='text-align:center; font-size:18px;'>자신의 MBTI를 선택하면, 해당 성향에 맞는 잘하는 것들과 추천 직업을 예쁜 이모지와 함께 보여드립니다.</p>", unsafe_allow_html=True)
 
 # MBTI 선택
 mbti_types = list(type_to_info.keys())
@@ -62,14 +71,15 @@ selected_mbti = st.selectbox("당신의 MBTI를 선택하세요:", mbti_types)
 if st.button("🌈 추천 받기"):
     with st.spinner("당신의 적성과 직업을 분석하는 중입니다... 💭"):
         time.sleep(1.5)
-    st.balloons()
+    st.snow() if random.choice([True, False]) else st.balloons()
     st.markdown(f"<h2 style='color:#ff6f61;'>{selected_mbti} 유형의 잘하는 것 & 추천 직업</h2>", unsafe_allow_html=True)
-    st.write("### 💪 잘하는 것:")
+    st.markdown("### 💪 잘하는 것:")
     for strength in type_to_info[selected_mbti]["strengths"]:
-        st.write(f"- {strength}")
-    st.write("### 💼 추천 직업:")
+        st.markdown(f"- {strength}")
+    st.markdown("### 💼 추천 직업:")
     for job in type_to_info[selected_mbti]["jobs"]:
-        st.write(f"- {job}")
+        st.markdown(f"- {job}")
+    st.success("당신의 강점을 살려 멋진 커리어를 만들어 보세요! 🚀")
 
 st.write("---")
 st.caption("Made with ❤️ using Streamlit")
