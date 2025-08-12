@@ -9,9 +9,20 @@ def get_saju_recommendations(birth_date, birth_time):
     day = int(birth_date.split('-')[2])
     hour = int(birth_time.split(':')[0])
 
-    # 간단한 명리학 알고리즘 예시 (년+월+일+시 조합)
-    index = (year + month + day + hour) % 5
-    element = ["목(木)", "화(火)", "토(土)", "금(金)", "수(水)"][index]
+    # 더 정교한 오행 판정: 년도 천간/지지 포함 계산
+    heavenly_stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"]
+    earthly_branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"]
+    stem = heavenly_stems[(year - 4) % 10]
+    branch = earthly_branches[(year - 4) % 12]
+
+    element_map = {
+        "갑": "목(木)", "을": "목(木)",
+        "병": "화(火)", "정": "화(火)",
+        "무": "토(土)", "기": "토(土)",
+        "경": "금(金)", "신": "금(金)",
+        "임": "수(水)", "계": "수(水)"
+    }
+    element = element_map[stem]
 
     strengths = {
         "목(木)": ["성장 지향", "창의성과 직관", "계획성과 조직력", "변화를 이끄는 힘"],
@@ -29,7 +40,7 @@ def get_saju_recommendations(birth_date, birth_time):
         "수(水)": ["심리상담가", "외교관", "여행 기획자", "마케팅 전문가"],
     }
 
-    return element, strengths[element], jobs[element]
+    return f"{stem}{branch}년 ({element})", strengths[element], jobs[element]
 
 # 페이지 제목
 st.markdown(
@@ -50,7 +61,7 @@ if st.button("🔮 근엄하게 추천 받기"):
     with st.spinner("천문과 지리를 읽고 있습니다...🌌"):
         time.sleep(2)
     element, strengths, jobs = get_saju_recommendations(str(birth_date), str(birth_time))
-    st.markdown(f"<h2 style='color:gold;'>🏯 당신의 오행: {element}</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:gold;'>🏯 당신의 사주: {element}</h2>", unsafe_allow_html=True)
     st.markdown("### 📜 강점")
     for s in strengths:
         st.write(f"- {s}")
