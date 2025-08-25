@@ -1,12 +1,40 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="📘")
+# 배경 이미지 4장 경로 (로컬 파일을 base64로 인코딩하거나 웹에 업로드해서 URL로 대체)
+# 여기서는 이미지 파일을 base64 인코딩해서 CSS에 넣는 예시입니다.
+
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    import base64
+    return base64.b64encode(data).decode()
+
+img1 = get_base64_of_bin_file("/mnt/data/43d95ac7f42847d5b91fcbd4f39c889c.png")
+img2 = get_base64_of_bin_file("/mnt/data/cbc22f0b73224ffa93a6b79adc4ae1a5.png")
+img3 = get_base64_of_bin_file("/mnt/data/96c7810b83384063ba21899e5bcd32ab.png")
+img4 = get_base64_of_bin_file("/mnt/data/ff3f1811f4e1419eb905df876e236b89.png")
+
+st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="📘", layout="centered")
+
+# 배경 스타일 적용
+page_bg_img = f"""
+<style>
+[data-testid="stAppViewContainer"] > .main {{
+    background: linear-gradient(rgba(255,182,193,0.3), rgba(255,182,193,0.3)), url("data:image/png;base64,{img1}"), url("data:image/png;base64,{img2}"), url("data:image/png;base64,{img3}"), url("data:image/png;base64,{img4}");
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+    background-position: center top, left bottom, right bottom, left top, right top;
+    background-size: 200px 300px, 200px 300px, 200px 300px, 200px 300px, 200px 300px;
+    filter: brightness(0.8);
+    background-blend-mode: lighten;
+}}
+</style>
+"""
+st.markdown(page_bg_img, unsafe_allow_html=True)
 
 st.title("📘 내가 웹툰 속에 들어간다면?")
 st.markdown("이름을 입력하면 웹툰 속 당신의 모습을 알려드립니다!")
 
-# 이름 입력
 name = st.text_input("당신의 이름을 입력하세요:")
 
 def generate_character(name):
@@ -34,7 +62,6 @@ def generate_character(name):
     ]
     personality = random.choice(personalities)
 
-    # 한 줄로 결과 조합
     result = (f"{name}님의 웹툰 캐릭터는 키 {height}cm에 '{role}' 포지션이며, "
               f"외형은 {appearance}, 성격은 {personality}입니다.")
     return result
@@ -42,6 +69,5 @@ def generate_character(name):
 if name:
     st.write(generate_character(name))
 
-    # 다시 하기 버튼
     if st.button("다시 하기"):
         st.experimental_rerun()
