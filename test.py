@@ -3,17 +3,17 @@ import random
 
 st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="📘", layout="centered")
 
-pink_css = """
+css = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 
 body, .main {
     height: 100%;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #ffe6f0 0%, #ffb3d9 100%);
-    font-family: 'Nanum Brush Script', cursive;
-    color: #800040;
+    background: linear-gradient(135deg, #ffe4ec 0%, #ffd0dd 100%);
+    font-family: 'Nanum Gothic', sans-serif;
+    color: #6a0d53;
 }
 
 /* 내부 컨테이너 배경 투명 */
@@ -25,150 +25,148 @@ body, .main {
 
 /* 제목 스타일 */
 h1 {
-    font-size: 3.5rem !important;
+    font-size: 3rem !important;
     text-align: center;
-    margin-bottom: 0.3em;
-    color: #9b0068;
-    text-shadow: 1px 1px 5px #ffb6c1;
+    margin-bottom: 0.5em;
+    color: #7b2a5a;
+    font-weight: 700;
 }
 
 /* 설명 텍스트 */
 h2, p, label {
-    color: #a3006a !important;
-    font-size: 1.4rem !important;
+    color: #7b2a5a !important;
+    font-size: 1.25rem !important;
     text-align: center;
-    margin-bottom: 1.2em;
+    margin-bottom: 1em;
 }
 
 /* 입력창 스타일 */
 .stTextInput>div>div>input {
-    border: 3px solid #ff77b7;
-    border-radius: 15px;
-    padding: 12px 15px;
-    font-size: 20px;
-    color: #800040;
-    background-color: #fff0f6;
-    box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
+    border: 2px solid #d57ea0;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 18px;
+    color: #6a0d53;
+    background-color: #fff0f4;
+    box-shadow: 0 2px 5px rgba(213, 126, 160, 0.3);
     transition: border-color 0.3s ease;
     width: 100%;
-    max-width: 400px;
+    max-width: 380px;
     margin: 0 auto;
     display: block;
 }
 
 .stTextInput>div>div>input:focus {
-    border-color: #ff1493;
+    border-color: #b94c77;
     outline: none;
 }
 
 /* 버튼 스타일 */
 .stButton > button {
-    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    background: #d57ea0;
     color: #fff;
-    font-weight: 700;
+    font-weight: 600;
     border: none;
-    border-radius: 30px;
-    padding: 15px 50px;
-    font-size: 22px;
+    border-radius: 25px;
+    padding: 12px 40px;
+    font-size: 18px;
     cursor: pointer;
-    box-shadow: 0 6px 12px rgba(255, 20, 147, 0.6);
-    transition: all 0.4s ease;
+    box-shadow: 0 4px 8px rgba(213, 126, 160, 0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
     display: block;
     margin: 20px auto 0 auto;
-    max-width: 300px;
+    max-width: 240px;
     text-align: center;
 }
 
 .stButton > button:hover {
-    background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
-    box-shadow: 0 8px 20px rgba(255, 20, 147, 0.8);
-    transform: scale(1.05);
+    background: #b94c77;
+    box-shadow: 0 6px 12px rgba(185, 76, 119, 0.7);
 }
 
 /* 결과 텍스트 스타일 */
-.streamlit-expanderHeader, .stMarkdown {
-    font-size: 1.5rem !important;
-    color: #a3006a !important;
+.stMarkdown {
+    font-size: 1.3rem !important;
+    color: #7b2a5a !important;
     text-align: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    margin-top: 25px;
+    margin-bottom: 40px;
     font-weight: 600;
-    text-shadow: 1px 1px 3px #ffb6c1;
 }
 
 /* 하트 애니메이션 */
 @keyframes floatUp {
   0% {
     transform: translateY(0) scale(1) rotate(-45deg);
-    opacity: 1;
+    opacity: 0.8;
   }
   100% {
-    transform: translateY(-300px) scale(2) rotate(-45deg);
+    transform: translateY(-180px) scale(1.5) rotate(-45deg);
     opacity: 0;
   }
 }
 
 .heart {
   position: fixed;
-  width: 24px;
-  height: 24px;
-  background-color: #ff4da6;
+  width: 18px;
+  height: 18px;
+  background-color: #d57ea0;
   bottom: 0;
-  filter: drop-shadow(0 0 6px #ff66b2);
+  filter: drop-shadow(0 0 4px #b94c77);
   animation-name: floatUp;
   animation-timing-function: ease-out;
   animation-iteration-count: infinite;
-  opacity: 0.9;
+  opacity: 0.8;
   z-index: 15;
   transform: rotate(-45deg);
-  border-radius: 4px 4px 0 0;
+  border-radius: 3px 3px 0 0;
 }
 
 .heart::before,
 .heart::after {
   content: "";
   position: absolute;
-  width: 24px;
-  height: 24px;
-  background-color: #ff4da6;
+  width: 18px;
+  height: 18px;
+  background-color: #d57ea0;
   border-radius: 50%;
 }
 
 .heart::before {
-  top: -12px;
+  top: -9px;
   left: 0;
 }
 
 .heart::after {
-  left: 12px;
+  left: 9px;
   top: 0;
 }
 
 .heart:nth-child(1) {
-  left: 10%;
-  animation-duration: 5s;
+  left: 12%;
+  animation-duration: 5.5s;
   animation-delay: 0s;
 }
 .heart:nth-child(2) {
-  left: 30%;
-  animation-duration: 6.5s;
-  animation-delay: 1.5s;
-  width: 20px;
-  height: 20px;
+  left: 32%;
+  animation-duration: 6.8s;
+  animation-delay: 1.8s;
+  width: 15px;
+  height: 15px;
 }
 .heart:nth-child(3) {
-  left: 55%;
-  animation-duration: 7.5s;
-  animation-delay: 2.5s;
-  width: 28px;
-  height: 28px;
-}
-.heart:nth-child(4) {
-  left: 80%;
-  animation-duration: 5.5s;
-  animation-delay: 2.8s;
+  left: 58%;
+  animation-duration: 7.4s;
+  animation-delay: 2.9s;
   width: 22px;
   height: 22px;
+}
+.heart:nth-child(4) {
+  left: 82%;
+  animation-duration: 5.9s;
+  animation-delay: 3.1s;
+  width: 19px;
+  height: 19px;
 }
 </style>
 
@@ -178,7 +176,7 @@ h2, p, label {
 <div class="heart"></div>
 """
 
-st.markdown(pink_css, unsafe_allow_html=True)
+st.markdown(css, unsafe_allow_html=True)
 
 st.title("📘 내가 웹툰 속에 들어간다면?")
 st.markdown("이름을 입력하면 웹툰 속 당신의 모습을 알려드립니다!")
