@@ -1,12 +1,106 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="📘")
+st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="📘", layout="centered")
+
+# CSS로 배경 핑크색 + 하트 애니메이션 추가
+page_bg_css = """
+<style>
+/* 배경 연한 핑크색 */
+[data-testid="stAppViewContainer"] > .main {
+    background-color: #ffd1dc;  /* 연한 핑크 */
+    position: relative;
+    z-index: 0;
+}
+
+/* 하트 애니메이션 */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-200px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+.heart {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background-color: #ff6b81;
+  transform: rotate(-45deg);
+  bottom: 0;
+  animation-name: floatUp;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+  opacity: 0.8;
+  z-index: 10;
+}
+
+/* 하트 모양 만들기 */
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #ff6b81;
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -10px;
+  left: 0;
+}
+
+.heart::after {
+  left: 10px;
+  top: 0;
+}
+
+/* 하트 위치와 애니메이션 딜레이 */
+.heart:nth-child(1) {
+  left: 20%;
+  animation-duration: 4s;
+  animation-delay: 0s;
+}
+.heart:nth-child(2) {
+  left: 40%;
+  animation-duration: 5s;
+  animation-delay: 1.5s;
+  width: 15px;
+  height: 15px;
+}
+.heart:nth-child(3) {
+  left: 60%;
+  animation-duration: 6s;
+  animation-delay: 3s;
+  width: 25px;
+  height: 25px;
+}
+.heart:nth-child(4) {
+  left: 80%;
+  animation-duration: 4.5s;
+  animation-delay: 2s;
+  width: 18px;
+  height: 18px;
+}
+</style>
+
+<!-- 하트 div 4개 생성 -->
+<div class="heart"></div>
+<div class="heart"></div>
+<div class="heart"></div>
+<div class="heart"></div>
+"""
+
+st.markdown(page_bg_css, unsafe_allow_html=True)
 
 st.title("📘 내가 웹툰 속에 들어간다면?")
 st.markdown("이름을 입력하면 웹툰 속 당신의 모습을 알려드립니다!")
 
-# 이름 입력
 name = st.text_input("당신의 이름을 입력하세요:")
 
 def generate_character(name):
@@ -42,6 +136,5 @@ def generate_character(name):
 if name:
     st.write(generate_character(name))
 
-    # 다시 하기 버튼
     if st.button("다시 하기"):
         st.experimental_rerun()
