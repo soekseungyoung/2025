@@ -3,7 +3,7 @@ import random
 
 st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="📘", layout="centered")
 
-# CSS로 배경 핑크색 + 하트 애니메이션 추가
+# 배경 연한 핑크색 + 하트 애니메이션 CSS
 page_bg_css = """
 <style>
 /* 배경 연한 핑크색 */
@@ -13,7 +13,7 @@ page_bg_css = """
     z-index: 0;
 }
 
-/* 하트 애니메이션 */
+/* 하트 애니메이션 정의 */
 @keyframes floatUp {
   0% {
     transform: translateY(0) scale(1);
@@ -25,6 +25,7 @@ page_bg_css = """
   }
 }
 
+/* 하트 모양 */
 .heart {
   position: fixed;
   width: 20px;
@@ -39,7 +40,6 @@ page_bg_css = """
   z-index: 10;
 }
 
-/* 하트 모양 만들기 */
 .heart::before,
 .heart::after {
   content: "";
@@ -60,7 +60,7 @@ page_bg_css = """
   top: 0;
 }
 
-/* 하트 위치와 애니메이션 딜레이 */
+/* 하트 위치 및 애니메이션 타이밍 */
 .heart:nth-child(1) {
   left: 20%;
   animation-duration: 4s;
@@ -89,18 +89,21 @@ page_bg_css = """
 }
 </style>
 
-<!-- 하트 div 4개 생성 -->
+<!-- 하트 div 4개 -->
 <div class="heart"></div>
 <div class="heart"></div>
 <div class="heart"></div>
 <div class="heart"></div>
 """
 
+# CSS 적용
 st.markdown(page_bg_css, unsafe_allow_html=True)
 
+# 타이틀과 설명
 st.title("📘 내가 웹툰 속에 들어간다면?")
 st.markdown("이름을 입력하면 웹툰 속 당신의 모습을 알려드립니다!")
 
+# 이름 입력
 name = st.text_input("당신의 이름을 입력하세요:")
 
 def generate_character(name):
@@ -128,7 +131,7 @@ def generate_character(name):
     ]
     personality = random.choice(personalities)
 
-    # 한 줄로 결과 조합
+    # 결과 한 줄로 조합
     result = (f"{name}님의 웹툰 캐릭터는 키 {height}cm에 '{role}' 포지션이며, "
               f"외형은 {appearance}, 성격은 {personality}입니다.")
     return result
