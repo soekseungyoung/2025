@@ -5,9 +5,17 @@ st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon
 
 pink_css = """
 <style>
-/* 배경색을 진한 연핑크로 */
+/* 페이지 전체 배경 핑크 */
+body, .main {
+    background-color: #ffe6f0 !important;  /* 아주 연한 핑크 */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* 앱 내부 메인 컨테이너 배경 투명 처리 */
 [data-testid="stAppViewContainer"] > .main {
-    background: linear-gradient(135deg, #ffc1e3 0%, #ffb6c1 100%);
+    background-color: transparent !important;
     position: relative;
     z-index: 0;
     color: #800040;  /* 진한 핑크 텍스트 */
