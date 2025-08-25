@@ -2,43 +2,51 @@ import streamlit as st
 import random
 import base64
 
-def get_base64(file_path):
-    with open(file_path, "rb") as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
-
-# 이미지 base64 인코딩 (경로는 본인 파일 위치로 변경)
-img1 = get_base64("/mnt/data/43d95ac7-f428-47d5-b91f-cbd4f39c889c.png")
-img2 = get_base64("/mnt/data/cbc22f0b-7324-4ffa-93a6-b79adc4ae1a5.png")
-img3 = get_base64("/mnt/data/96c7810b-8338-4063-ba21-899e5bcd32ab.png")
-img4 = get_base64("/mnt/data/ff3f1811-f4e1-419e-b905-df876e236b89.png")
-
 st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="📘", layout="centered")
-
-# CSS 스타일 적용
-page_bg_img = f"""
-<style>
-[data-testid="stAppViewContainer"] > .main {{
-    background-color: #ffd1dc;  /* 연한 핑크 배경 */
-    background-image:
-        url("data:image/png;base64,{img1}"),
-        url("data:image/png;base64,{img2}"),
-        url("data:image/png;base64,{img3}"),
-        url("data:image/png;base64,{img4}");
-    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
-    background-position: left top, right top, left bottom, right bottom;
-    background-size: 150px 200px, 150px 200px, 150px 200px, 150px 200px;
-    opacity: 0.15;  /* 전체 투명도 */
-    background-blend-mode: lighten;
-}}
-</style>
-"""
-
-st.markdown(page_bg_img, unsafe_allow_html=True)
 
 st.title("📘 내가 웹툰 속에 들어간다면?")
 st.markdown("이름을 입력하면 웹툰 속 당신의 모습을 알려드립니다!")
 
+# 이미지 4장 업로드 받기
+uploaded_imgs = []
+for i in range(1,5):
+    uploaded_img = st.file_uploader(f"배경 이미지 {i} 업로드 (선택)", type=["png", "jpg", "jpeg"], key=f"img{i}")
+    uploaded_imgs.append(uploaded_img)
+
+def get_base64(file):
+    if file is None:
+        return None
+    return base64.b64encode(file.read()).decode()
+
+# 업로드된 이미지가 모두 있으면 base64로 변환
+base64_imgs = []
+if all(uploaded_imgs):
+    for img in uploaded_imgs:
+        base64_imgs.append(get_base64(img))
+
+    # CSS에 이미지 넣기
+    page_bg_img = f"""
+    <style>
+    [data-testid="stAppViewContainer"] > .main {{
+        background-color: #ffd1dc;  /* 연한 핑크 배경 */
+        background-image:
+            url("data:image/png;base64,{base64_imgs[0]}"),
+            url("data:image/png;base64,{base64_imgs[1]}"),
+            url("data:image/png;base64,{base64_imgs[2]}"),
+            url("data:image/png;base64,{base64_imgs[3]}");
+        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+        background-position: left top, right top, left bottom, right bottom;
+        background-size: 150px 200px, 150px 200px, 150px 200px, 150px 200px;
+        opacity: 0.15;
+        background-blend-mode: lighten;
+    }}
+    </style>
+    """
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+else:
+    st.info("배경 이미지 4장을 모두 업로드 해주세요. (선택시 배경 이미지가 표시됩니다)")
+
+# 이름 입력 및 캐릭터 생성
 name = st.text_input("당신의 이름을 입력하세요:")
 
 def generate_character(name):
