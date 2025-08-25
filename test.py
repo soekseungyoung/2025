@@ -18,7 +18,6 @@ img2 = get_base64("/mnt/data/cbc22f0b-7324-4ffa-93a6-b79adc4ae1a5.png")
 img3 = get_base64("/mnt/data/96c7810b-8338-4063-ba21-899e5bcd32ab.png")
 img4 = get_base64("/mnt/data/ff3f1811-f4e1-419e-b905-df876e236b89.png")
 
-# 배경 스타일 (연한 핑크 + 이미지 4장 + 하트 애니메이션)
 page_bg = f"""
 <style>
 @keyframes floatUp {{
@@ -141,3 +140,20 @@ def generate_character(name):
 
     personalities = [
         "겉은 차가워 보이지만 속은 따뜻한 스타일",
+        "모든 사람에게 친절한 인싸",
+        "혼자 있는 걸 좋아하는 무뚝뚝한 타입",
+        "정의감 넘치고 다혈질",
+        "감성적이고 눈물이 많은 성격",
+        "장난기 많고 유쾌한 분위기 메이커"
+    ]
+    personality = random.choice(personalities)
+
+    result = (f"{name}님의 웹툰 캐릭터는 키 {height}cm에 '{role}' 포지션이며, "
+              f"외형은 {appearance}, 성격은 {personality}입니다.")
+    return result
+
+if name:
+    st.write(generate_character(name))
+
+    if st.button("다시 하기"):
+        st.experimental_rerun()
