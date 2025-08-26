@@ -178,7 +178,7 @@ h2, p, label {
 
 st.markdown(css, unsafe_allow_html=True)
 
-st.title("📘 내가 웹툰 속에 들어간다면?")
+st.title("🩷내가 축구 웹툰 속에 들어간다면?🩷")
 st.markdown("이름을 입력하면 웹툰 속 당신의 모습을 알려드립니다!")
 
 name = st.text_input("당신의 이름을 입력하세요:")
