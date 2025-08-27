@@ -97,16 +97,10 @@ def generate_character(name):
 if name and st.button("✨ 캐릭터 생성!"):
     st.markdown(generate_character(name), unsafe_allow_html=True)
     
-    # 🔊 효과음 + 설레는 로맨틱 BGM
-    st.markdown(
-        """
-        <audio autoplay>
-            <!-- 버튼 클릭 효과음 (띵✨) -->
-            <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6e5e9a.mp3?filename=ding-101492.mp3" type="audio/mp3">
-        </audio>
-        <audio autoplay>
-            <!-- 설레는 로맨틱 음악 -->
-            <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3b6d6cb59b.mp3?filename=spring-love-21906.mp3" type="audio/mp3">
-        </audio>
-        """, unsafe_allow_html=True
-    )
+    # 🔊 버튼 클릭 효과음
+    ding_audio = "https://cdn.pixabay.com/download/audio/2022/03/15/audio_6e5e9a.mp3?filename=ding-101492.mp3"
+    st.audio(ding_audio, format="audio/mp3", start_time=0)
+    
+    # 🔊 설레는 로맨틱 BGM
+    romantic_audio = "https://cdn.pixabay.com/download/audio/2022/03/15/audio_3b6d6cb59b.mp3?filename=spring-love-21906.mp3"
+    st.audio(romantic_audio, format="audio/mp3", start_time=0)
