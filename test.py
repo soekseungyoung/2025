@@ -1,7 +1,7 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="내가 축구 웹툰 속에 들어간다면?", page_icon="🩷", layout="centered")
+st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="🩷", layout="centered")
 
 # -------------------- CSS --------------------
 css = """
@@ -65,7 +65,7 @@ css = """
 st.markdown(css, unsafe_allow_html=True)
 
 # -------------------- UI --------------------
-st.title("🩷 내가 축구 웹툰 속에 들어간다면? 🩷")
+st.title("🩷 내가 웹툰 속에 들어간다면? 🩷")
 st.markdown("이름을 입력하면 웹툰 속 당신의 모습을 알려드립니다! ⚽️")
 
 name = st.text_input("당신의 이름을 입력하세요:")
