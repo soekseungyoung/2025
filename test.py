@@ -1,156 +1,104 @@
 import streamlit as st
 import random
 
+# -------------------- 페이지 설정 --------------------
 st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="🩷", layout="centered")
 
-# -------------------- CSS --------------------
+# -------------------- 스타일 --------------------
 css = """
 <style>
-@keyframes fadeIn {from {opacity: 0; transform: translateY(-20px);} to {opacity:1; transform: translateY(0);}}
-@keyframes glow {0% {text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff1493;}50% {text-shadow: 0 0 20px #ff69b4, 0 0 35px #ff1493;}100% {text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff1493;}}
-@keyframes boxGlow {0% {box-shadow: 0 6px 15px rgba(255,105,180,0.5);}50% {box-shadow: 0 15px 30px rgba(255,20,147,0.9);}100% {box-shadow: 0 6px 15px rgba(255,105,180,0.5);}}
-@keyframes fireworks {0% {transform: scale(0.5); opacity: 1;}50% {transform: scale(2); opacity: 0.8;}100% {transform: scale(3); opacity: 0;}}
-@keyframes sparkle {0%,100% {opacity:0.2;}50% {opacity:1;}}
-@keyframes itemBounce {0%, 100% {transform: translateY(0);}50% {transform: translateY(-12px) scale(1.1);}}
-
-/* 전체 앱 */
-.stApp {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #ffb6c1, #ffc0cb, #ff69b4, #ff1493, #d61a8d);
-    font-family: 'Nanum Gothic', sans-serif;
-    color: #6a0d53;
-    text-align: center;
-    overflow: hidden;
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(30px);}
+  to {opacity: 1; transform: translateY(0);}
 }
-
-/* 버튼 */
-.stButton>button {
-    background: linear-gradient(90deg, #ff69b4, #ff1493);
+@keyframes glow {
+  0% { text-shadow: 0 0 5px #fff, 0 0 10px #ff69b4, 0 0 20px #ff1493; }
+  50% { text-shadow: 0 0 20px #fff, 0 0 40px #ff69b4, 0 0 60px #ff1493; }
+  100% { text-shadow: 0 0 5px #fff, 0 0 10px #ff69b4, 0 0 20px #ff1493; }
+}
+@keyframes aurora {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+.stApp {
+    background: linear-gradient(270deg, #0f0c29, #302b63, #24243e);
+    background-size: 600% 600%;
+    animation: aurora 20s ease infinite;
+    font-family: 'Georgia', serif;
     color: white;
-    border-radius: 30px;
-    padding: 14px 45px;
-    font-size: 20px;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0px 0px 15px rgba(255,20,147,0.6);
+}
+.result-box {
+    animation: fadeIn 1.5s ease-in-out;
+    background: rgba(0,0,0,0.6);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 30px;
+    font-size: 22px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 0 30px rgba(255, 105, 180, 0.9), inset 0 0 20px rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.2);
+}
+.result-box b {
+    animation: glow 2s infinite;
+    font-size: 24px;
+}
+.stButton>button {
+    background: linear-gradient(135deg, #ff7eb3, #ff758c);
+    border: none;
+    padding: 12px 24px;
+    color: white;
+    font-size: 18px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 20px rgba(255, 118, 136, 0.6);
     transition: all 0.3s ease;
 }
 .stButton>button:hover {
-    background: linear-gradient(90deg, #ff1493, #ff69b4);
-    transform: scale(1.15) rotate(-4deg);
-    box-shadow: 0px 0px 30px rgba(255,20,147,0.9);
-}
-
-/* 캐릭터 박스 */
-.result-box {
-    background: #fff0f9;
-    border: 3px solid #ff69b4;
-    border-radius: 30px;
-    padding: 40px;
-    margin: 30px auto;
-    max-width: 650px;
-    text-align: center;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #7b2a5a;
-    animation: boxGlow 2s infinite;
-    position: relative;
-    z-index: 10;
-    box-shadow: 0px 0px 20px rgba(255,105,180,0.6);
-}
-
-/* 아이템 */
-.item {
-    display: inline-block;
-    margin: 8px 12px;
-    padding: 6px 12px;
-    border-radius: 15px;
-    background: linear-gradient(135deg, #ffd1e8, #ffe4f2);
-    font-weight: 700;
-    animation: glow 2s infinite, itemBounce 1.2s infinite;
-}
-
-/* 포지션 강조 */
-.position-icon {
-    display: inline-block;
-    animation: glow 1.5s infinite, sparkle 1s infinite alternate;
-}
-
-/* 텍스트 등장 애니메이션 */
-.fade1 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 0.3s; font-size:2.3rem; color:#ff1493; text-shadow:0 0 10px #ff69b4;}
-.fade2 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 0.7s;}
-.fade3 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 1.0s; font-weight:800; color:#d61a8d;}
-.fade4 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 1.3s;}
-.fade5 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 1.6s;}
-.fade6 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 2.0s;}
-
-/* 폭죽 */
-.firework {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    background: radial-gradient(circle, #ff1493 0%, #ff69b4 50%, #ffd700 100%);
-    border-radius: 50%;
-    animation: fireworks 1.5s ease-out forwards;
-    mix-blend-mode: screen;
+    transform: scale(1.05);
+    box-shadow: 0px 8px 30px rgba(255, 118, 136, 0.9);
 }
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
 
+# -------------------- 데이터 --------------------
+roles = ["주인공", "조력자", "빌런", "라이벌", "은밀한 관찰자", "숨겨진 영웅", "어둠의 지배자", "전설 속 인물"]
+personalities = ["차가운 카리스마", "엉뚱 발랄", "잔혹한 천재", "순수한 정의감", "예측 불가능", "고독한 천재", "배신자", "희생자"]
+items = ["운명의 검", "마법의 펜던트", "불멸의 반지", "비밀의 책", "시간을 거스르는 시계", "검은 망토", "빛나는 수정", "금지된 주문서"]
+
+fates = [
+    "뜻밖의 배신으로 무너졌다.", "친구를 구하고 자신은 사라졌다.", "가장 소중한 것을 지키고 산산조각 났다.",
+    "끝내 외롭게 무너져 갔다.", "결국 악마가 되어버렸다.", "영웅으로 살았으나, 이름조차 잊혀졌다.",
+    "전설로 남아 후대의 이야기 속에 살아간다.", "마지막 순간, 모든 이를 지켜냈다.",
+    "불멸의 상징으로 기억되었다.", "스스로를 희생해 세상을 구했다.",
+    "사랑을 지키기 위해 모든 것을 버렸다.", "연인과 재회한 순간, 생이 다했다.",
+    "제국을 세웠으나 왕좌에서 홀로 죽었다.", "야망을 위해 달려갔으나 결국 패망했다.",
+    "흔적도 없이 사라져 전설로 남았다.", "끝내 정체가 밝혀지지 않았다."
+]
+
 # -------------------- UI --------------------
-st.title("🩷 내가 웹툰 속에 들어간다면? 🩷")
-st.markdown("이름을 입력하면 화려한 웹툰 속 캐릭터로 등장합니다! 🌟✨")
+st.title("🌌 내가 웹툰 속에 들어간다면? 🌌")
+st.markdown("당신의 운명을 장엄한 웹툰 서사로 확인해보세요. ⚔️")
 
-name = st.text_input("당신의 이름을 입력하세요:")
+name = st.text_input("✨ 이름을 입력하세요:")
 
-# -------------------- 캐릭터 데이터 --------------------
-roles = ["⚡ 카리스마 주인공", "🌸 청순한 히로인", "🔥 열혈 파이터", "❄ 차가운 천재",
-         "🌑 비밀스러운 라이벌", "🎭 능청스러운 조력자", "🌟 모두의 아이돌", "🌀 어두운 과거의 인물"]
-appearances = ["짧은 흑발에 강렬한 눈빛", "은은한 미소를 가진 금발", "차분한 흑단 머리에 서늘한 눈매",
-               "화려한 염색머리와 자신감 넘치는 포즈", "단정한 안경과 지적인 분위기", "항상 후드를 쓰고 다니는 미스터리한 모습",
-               "햇살 같은 미소와 따뜻한 인상", "날렵한 이목구비와 도도한 표정"]
-personalities = ["겉은 차갑지만 속은 따뜻한 츤데레 💖", "항상 웃음을 주는 분위기 메이커 🎉",
-                 "모두를 지키려는 정의감 넘치는 성격 🔥", "예술적 감각이 빛나는 감성파 🎨",
-                 "고집이 강하지만 신념을 지키는 타입 🛡", "자신감 넘치고 도전적인 성격 🚀",
-                 "소박하지만 다정한 마음씨 💕", "조용하지만 존재감이 큰 캐릭터 🌌"]
-items = ["🏆 트로피", "🎧 헤드폰", "📚 책", "🌸 꽃", "⚡ 전기볼", "🦄 마법봉", "🎨 팔레트", "🗡 전설의 검"]
+if st.button("운명 확인하기"):
+    if name.strip() == "":
+        st.warning("이름을 입력해주세요!")
+    else:
+        role = random.choice(roles)
+        personality = random.choice(personalities)
+        item = random.choice(items)
+        fate = random.choice(fates)
 
-# -------------------- 캐릭터 생성 함수 --------------------
-def generate_character(name):
-    height = random.randint(150, 190)
-    role = random.choice(roles)
-    appearance = random.choice(appearances)
-    personality = random.choice(personalities)
-    item = random.choice(items)
-    height_str = f"<b>{height}cm</b> 🌟" if height >= 180 else f"<b>{height}cm</b>"
-    
-    return f"""
-    <div class='result-box'>
-        <h2 class='fade1'>{name}님의 웹툰 캐릭터</h2>
-        <p class='fade2'>📏 키: {height_str}</p>
-        <p class='fade3'>포지션: <b class='position-icon'>{role}</b></p>
-        <p class='fade4'>외형: <b>{appearance}</b></p>
-        <p class='fade5'>성격: <b>{personality}</b></p>
-        <p class='fade6'>아이템: <span class='item'>{item}</span><br><br>
-        🎯 오늘의 운세: {random.choice(['행운 가득! 🍀', '도전의 날! 🔥', '느긋한 하루 🐢', '새로운 만남 기대 ✨'])}</p>
-    </div>
-    """
-
-# -------------------- 폭죽 랜덤 생성 --------------------
-def fireworks_effect():
-    firework_html = ""
-    for i in range(15):  # 폭죽 수 더 많게
-        x = random.randint(5, 95)
-        y = random.randint(5, 80)
-        color = random.choice(["#ff1493", "#ff69b4", "#ffd700", "#00ffff", "#ff4500"])
-        firework_html += f"<div class='firework' style='top:{y}%; left:{x}%; background: radial-gradient(circle, {color} 0%, white 80%); animation-delay:{random.uniform(0,1)}s;'></div>"
-    st.markdown(firework_html, unsafe_allow_html=True)
-
-# -------------------- 결과 출력 --------------------
-if name and st.button("✨ 캐릭터 생성!"):
-    fireworks_effect()
-    st.markdown(generate_character(name), unsafe_allow_html=True)
-    st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", start_time=0)
+        result = f"""
+        <div class="result-box">
+        🌟 <b>{name}</b> 님은 웹툰 속에서... <br><br>
+        🎭 역할: <b>{role}</b><br>
+        💫 성격: <b>{personality}</b><br>
+        🔮 아이템: <b>{item}</b><br>
+        ⚔️ 최후: <b>{fate}</b>
+        </div>
+        """
+        st.markdown(result, unsafe_allow_html=True)
