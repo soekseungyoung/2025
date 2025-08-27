@@ -1,11 +1,15 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="🩷", layout="centered")
+st.set_page_config(page_title="내가 축구 웹툰 속에 들어간다면?", page_icon="🩷", layout="centered")
 
 # -------------------- CSS --------------------
 css = """
 <style>
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
 .stApp {
     height: 100%;
     margin: 0;
@@ -13,6 +17,7 @@ css = """
     background: linear-gradient(135deg, #ffb6c1, #ffc0cb, #ff69b4);
     font-family: 'Nanum Gothic', sans-serif;
     color: #6a0d53;
+    text-align: center;
 }
 .stButton>button {
     background: #ff69b4;
@@ -22,30 +27,45 @@ css = """
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 .stButton>button:hover {
     background: #ff1493;
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
 .result-box {
     background: #fff0f4;
     border: 2px solid #ff69b4;
     border-radius: 20px;
-    padding: 20px;
+    padding: 25px;
     margin: 30px auto;
-    max-width: 500px;
+    max-width: 550px;
     text-align: center;
     font-size: 1.3rem;
     font-weight: 600;
     color: #7b2a5a;
-    box-shadow: 0 6px 12px rgba(255, 105, 180, 0.4);
+    box-shadow: 0 6px 15px rgba(255, 105, 180, 0.5);
 }
+.item {
+    display: inline-block;
+    margin: 5px 10px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    background: #ffd1e8;
+    font-weight: 500;
+}
+.fade1 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 0.3s;}
+.fade2 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 0.6s;}
+.fade3 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 0.9s;}
+.fade4 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 1.2s;}
+.fade5 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 1.5s;}
+.fade6 {animation: fadeIn 0.5s ease forwards; opacity:0; animation-delay: 1.8s;}
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
 
 # -------------------- UI --------------------
-st.title("🩷내가 웹툰 속에 들어간다면?🩷")
+st.title("🩷 내가 축구 웹툰 속에 들어간다면? 🩷")
 st.markdown("이름을 입력하면 웹툰 속 당신의 모습을 알려드립니다! ⚽️")
 
 name = st.text_input("당신의 이름을 입력하세요:")
@@ -79,6 +99,7 @@ personalities = [
     "열정적이고 목표에 몰두하는 노력가 🔥", "어색하지만 은근히 귀여운 성격 🐱",
     "사소한 것에 행복을 느끼는 소박한 성격 🌼"
 ]
+items = ["🏆 트로피", "🎧 헤드폰", "📚 책", "🌸 꽃", "⚡ 전기볼", "🦄 마법봉", "🎨 팔레트"]
 
 # -------------------- 캐릭터 생성 함수 --------------------
 def generate_character(name):
@@ -86,12 +107,20 @@ def generate_character(name):
     role = random.choice(roles)
     appearance = random.choice(appearances)
     personality = random.choice(personalities)
+    item = random.choice(items)
+    height_str = f"<b>{height}cm</b> 🔥" if height >= 180 else f"<b>{height}cm</b>"
     
-    return (f"<div class='result-box'>{name}님의 웹툰 캐릭터는<br><br>"
-            f"📏 키 <b>{height}cm</b><br>"
-            f"포지션: <b>{role}</b><br>"
-            f"외형: <b>{appearance}</b><br>"
-            f"성격: <b>{personality}</b></div>")
+    return f"""
+    <div class='result-box'>
+        <h2 class='fade1'>{name}님의 웹툰 캐릭터</h2>
+        <p class='fade2'>📏 키: {height_str}</p>
+        <p class='fade3'>포지션: <b>{role}</b></p>
+        <p class='fade4'>외형: <b>{appearance}</b></p>
+        <p class='fade5'>성격: <b>{personality}</b></p>
+        <p class='fade6'>아이템: <span class='item'>{item}</span><br><br>
+        🎯 오늘의 운세: {random.choice(['행운 가득! 🍀', '도전의 날! 🔥', '느긋한 하루 🐢', '새로운 만남 기대 ✨'])}</p>
+    </div>
+    """
 
 # -------------------- 결과 출력 --------------------
 if name and st.button("✨ 캐릭터 생성!"):
