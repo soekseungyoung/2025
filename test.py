@@ -1,7 +1,7 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="내가 웹툰 속에 들어간다면?", page_icon="🩷", layout="centered")
+st.set_page_config(page_title="내가 축구 웹툰 속에 들어간다면?", page_icon="🩷", layout="centered")
 
 # -------------------- CSS --------------------
 css = """
@@ -45,7 +45,7 @@ css = """
 st.markdown(css, unsafe_allow_html=True)
 
 # -------------------- UI --------------------
-st.title("🩷내가 웹툰 속에 들어간다면?🩷")
+st.title("🩷내가 축구 웹툰 속에 들어간다면?🩷")
 st.markdown("이름을 입력하면 웹툰 속 당신의 모습을 알려드립니다! ⚽️")
 
 name = st.text_input("당신의 이름을 입력하세요:")
@@ -97,11 +97,16 @@ def generate_character(name):
 if name and st.button("✨ 캐릭터 생성!"):
     st.markdown(generate_character(name), unsafe_allow_html=True)
     
-    # 🔊 결과 나올 때 소리 재생
+    # 🔊 효과음 + 설레는 로맨틱 BGM
     st.markdown(
         """
         <audio autoplay>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+            <!-- 버튼 클릭 효과음 (띵✨) -->
+            <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6e5e9a.mp3?filename=ding-101492.mp3" type="audio/mp3">
+        </audio>
+        <audio autoplay>
+            <!-- 설레는 로맨틱 음악 -->
+            <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3b6d6cb59b.mp3?filename=spring-love-21906.mp3" type="audio/mp3">
         </audio>
         """, unsafe_allow_html=True
     )
