@@ -155,4 +155,7 @@ if submitted:
         <p>{report['연애']}</p>
         <h3>💰 재물운</h3>
         <p>{report['재물']}</p>
-        <h3>📖 웹
+        <h3>📖 웹툰 캐릭터</h3>
+        <p>{report['웹툰']}</p>
+    </div>
+    """, unsafe_allow_html=True)
