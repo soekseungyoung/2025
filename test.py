@@ -8,101 +8,51 @@ st.set_page_config(page_title="내가 웹툰에 들어간다면?", page_icon="�
 st.markdown(
     """
     <style>
-    /* 배경: 별자리 애니메이션 */
-    body {
-        margin: 0;
-        overflow: hidden;
-    }
     .stApp {
-        background: black;
-        position: relative;
+        background: linear-gradient(135deg, #0d0d0d, #1a1a1a, #000000);
         font-family: "Nanum Gothic", sans-serif;
         color: #FFD700;
     }
-    .stars {
-        width: 1px;
-        height: 1px;
-        background: transparent;
-        box-shadow: 
-            100px 200px #FFD700, 
-            300px 600px #FFD700,
-            700px 150px #FFD700,
-            900px 400px #FFD700,
-            1200px 250px #FFD700,
-            500px 800px #FFD700,
-            1300px 700px #FFD700;
-        animation: animStar 50s linear infinite;
-    }
-    .stars:after {
-        content: " ";
-        position: absolute;
-        top: 2000px;
-        width: 1px;
-        height: 1px;
-        background: transparent;
-        box-shadow: 
-            100px 200px #FFD700, 
-            300px 600px #FFD700,
-            700px 150px #FFD700,
-            900px 400px #FFD700,
-            1200px 250px #FFD700,
-            500px 800px #FFD700,
-            1300px 700px #FFD700;
-    }
-    @keyframes animStar {
-        from { transform: translateY(0px); }
-        to { transform: translateY(-2000px); }
-    }
-
-    /* 제목 */
     .title {
         font-size: 50px;
         font-weight: bold;
         text-align: center;
         margin-bottom: 25px;
         color: #FFD700;
-        text-shadow: 0px 0px 15px rgba(255,215,0,0.9), 0px 0px 30px rgba(255,215,0,0.7);
+        text-shadow: 0px 0px 10px rgba(255,215,0,0.8), 0px 0px 20px rgba(255,215,0,0.5);
     }
-
-    /* 결과 박스 */
     .result-box {
         background: rgba(20,20,20,0.85);
         padding: 30px;
         border-radius: 20px;
         border: 2px solid #FFD700;
-        box-shadow: 0px 0px 20px rgba(255,215,0,0.6);
+        box-shadow: 0px 0px 15px rgba(255,215,0,0.4);
         margin-top: 30px;
     }
-
     h2, h3 {
         color: #FFD700;
         text-shadow: 0px 0px 6px rgba(255,215,0,0.7);
     }
-
     p {
         font-size: 16px;
         line-height: 1.8;
         color: #f5f5dc;
     }
-
     hr {
         border: 1px solid #FFD700;
         margin: 20px 0;
     }
-
     .stRadio label {
         color: #FFD700 !important;
     }
     </style>
-
-    <div class="stars"></div>
     """,
     unsafe_allow_html=True
 )
 
 # -------------------- 제목 --------------------
 st.markdown('<div class="title">내가 웹툰에 들어간다면?</div>', unsafe_allow_html=True)
-st.write("✨ 별빛 아래 황금빛 사주풀이로 당신의 웹툰 캐릭터 운명을 알려드립니다 ✨")
+st.write("✨ 어둠 속 황금빛 사주풀이로 당신의 웹툰 캐릭터를 찾아드립니다 ✨")
 
 # -------------------- 입력 --------------------
 with st.form("user_form"):
