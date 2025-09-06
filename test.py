@@ -5,61 +5,43 @@ import random
 # -------------------- 페이지 설정 --------------------
 st.set_page_config(page_title="내가 웹툰에 들어간다면?", page_icon="📖", layout="centered")
 
-# -------------------- 배경 (황금별) --------------------
-# 별 div 생성
-stars_html = ""
-for _ in range(150):
-    top = random.randint(0, 95)
-    left = random.randint(0, 95)
-    size = random.randint(2, 5)
-    stars_html += f'<div style="position:absolute; top:{top}%; left:{left}%; width:{size}px; height:{size}px; background:#FFD700; border-radius:50%;"></div>'
-
-# CSS 적용
-st.markdown(f"""
+# -------------------- CSS 배경 (검정 + 황금별 이미지) --------------------
+st.markdown("""
 <style>
-.stApp {{
+.stApp {
     background-color: black;
+    background-image: radial-gradient(circle, #FFD700 1px, transparent 1px);
+    background-size: 20px 20px;
     position: relative;
-    overflow: hidden;
-    z-index: 0;
-}}
-.stars {{
-    position: absolute;
-    top:0; left:0;
-    width: 100%; height: 100%;
-    z-index: -1;
-}}
-.title {{
+}
+.title {
     font-size: 42px;
     color: #FFD700;
     text-align: center;
     margin-top: 30px;
     text-shadow: 0 0 15px #FFD700;
-}}
-.report {{
+}
+.report {
     background: rgba(20,20,20,0.85);
     border: 2px solid #FFD700;
     border-radius: 10px;
     padding: 25px;
-    margin-top: 20px;
+    margin-top: 30px;
     color: #f5f5dc;
     font-size: 18px;
     line-height: 1.7;
     box-shadow: 0 0 20px rgba(255,215,0,0.5);
-    position: relative;
-    z-index: 1;
-}}
-.report h3 {{
+}
+.report h3 {
     color: #FFD700;
     text-shadow: 0 0 6px #FFD700;
-}}
+}
 </style>
-<div class="stars">{stars_html}</div>
 """, unsafe_allow_html=True)
 
 # -------------------- 제목 --------------------
 st.markdown('<h1 class="title">내가 웹툰에 들어간다면?</h1>', unsafe_allow_html=True)
-st.write("✨ 별빛 아래 황금빛 실제 사주풀이로 당신의 웹툰 캐릭터 운명을 알려드립니다 ✨")
+st.write("✨ 황금빛 별이 반짝이는 사주풀이로 당신의 웹툰 캐릭터 운명을 알려드립니다 ✨")
 
 # -------------------- 입력폼 --------------------
 with st.form("user_form"):
@@ -69,7 +51,7 @@ with st.form("user_form"):
     birth_time = st.time_input("출생 시간")
     submitted = st.form_submit_button("결과 보기")
 
-# -------------------- 실제 사주풀이 --------------------
+# -------------------- 사주풀이 --------------------
 if submitted:
     # 천간/지지
     heavenly_stems = ["갑","을","병","정","무","기","경","신","임","계"]
@@ -77,7 +59,7 @@ if submitted:
 
     year, month, day, hour = birth_date.year, birth_date.month, birth_date.day, birth_time.hour
 
-    # 연주 계산
+    # 연주
     year_stem = heavenly_stems[(year-4)%10]
     year_branch = earthly_branches[(year-4)%12]
 
@@ -92,9 +74,9 @@ if submitted:
     # 시주
     hour_branch_index = (hour+1)//2 % 12
     hour_branch = earthly_branches[hour_branch_index]
-    hour_stem = heavenly_stems[(hour_branch_index + day_stem.count(''))%10]  # 단순 계산
+    hour_stem = heavenly_stems[(hour_branch_index + day_stem.count(''))%10]
 
-    # -------------------- 오행 분석 --------------------
+    # 오행 분석
     stem_to_element = {"갑":"목","을":"목","병":"화","정":"화","무":"토","기":"토","경":"금","신":"금","임":"수","계":"수"}
     day_element = stem_to_element[day_stem]
 
@@ -128,7 +110,7 @@ if submitted:
 
     report = element_report[day_element]
 
-    # -------------------- 출력 --------------------
+    # -------------------- 결과 출력 --------------------
     st.markdown(f"""
     <div class="report">
         <h3>🔮 {name}님의 웹툰형 사주 리포트</h3>
