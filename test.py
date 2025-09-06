@@ -5,20 +5,29 @@ import random
 # -------------------- 페이지 설정 --------------------
 st.set_page_config(page_title="내가 웹툰에 들어간다면?", page_icon="📖", layout="centered")
 
-# -------------------- 배경 (정적 별) --------------------
-star_html = ""
+# -------------------- 배경 (황금별) --------------------
+# 별 div 생성
+stars_html = ""
 for _ in range(150):
     top = random.randint(0, 95)
     left = random.randint(0, 95)
     size = random.randint(2, 5)
-    star_html += f'<div style="position:absolute; top:{top}%; left:{left}%; width:{size}px; height:{size}px; background:#FFD700; border-radius:50%;"></div>'
+    stars_html += f'<div style="position:absolute; top:{top}%; left:{left}%; width:{size}px; height:{size}px; background:#FFD700; border-radius:50%;"></div>'
 
+# CSS 적용
 st.markdown(f"""
 <style>
 .stApp {{
     background-color: black;
     position: relative;
     overflow: hidden;
+    z-index: 0;
+}}
+.stars {{
+    position: absolute;
+    top:0; left:0;
+    width: 100%; height: 100%;
+    z-index: -1;
 }}
 .title {{
     font-size: 42px;
@@ -37,13 +46,15 @@ st.markdown(f"""
     font-size: 18px;
     line-height: 1.7;
     box-shadow: 0 0 20px rgba(255,215,0,0.5);
+    position: relative;
+    z-index: 1;
 }}
 .report h3 {{
     color: #FFD700;
     text-shadow: 0 0 6px #FFD700;
 }}
 </style>
-<div>{star_html}</div>
+<div class="stars">{stars_html}</div>
 """, unsafe_allow_html=True)
 
 # -------------------- 제목 --------------------
@@ -60,35 +71,33 @@ with st.form("user_form"):
 
 # -------------------- 실제 사주풀이 --------------------
 if submitted:
-    # 천간/지지 리스트
+    # 천간/지지
     heavenly_stems = ["갑","을","병","정","무","기","경","신","임","계"]
     earthly_branches = ["자","축","인","묘","진","사","오","미","신","유","술","해"]
 
     year, month, day, hour = birth_date.year, birth_date.month, birth_date.day, birth_time.hour
 
-    # 연주 계산 (간단 버전)
+    # 연주 계산
     year_stem = heavenly_stems[(year-4)%10]
     year_branch = earthly_branches[(year-4)%12]
 
-    # 월주 계산 (단순화, 실제는 태양력 기준)
+    # 월주 (단순화)
     month_stem = heavenly_stems[(year*12 + month + 3)%10]
     month_branch = earthly_branches[(month+1)%12]
 
-    # 일주 계산 (간단화)
+    # 일주 (단순화)
     day_stem = heavenly_stems[(year*365 + month*30 + day)%10]
     day_branch = earthly_branches[(year*365 + month*30 + day)%12]
 
-    # 시주 계산
+    # 시주
     hour_branch_index = (hour+1)//2 % 12
     hour_branch = earthly_branches[hour_branch_index]
-    hour_stem = heavenly_stems[(hour_branch_index + day_stem.count(''))%10]  # 간단 계산
+    hour_stem = heavenly_stems[(hour_branch_index + day_stem.count(''))%10]  # 단순 계산
 
-    # -------------------- 오행 및 십성 분석 --------------------
+    # -------------------- 오행 분석 --------------------
     stem_to_element = {"갑":"목","을":"목","병":"화","정":"화","무":"토","기":"토","경":"금","신":"금","임":"수","계":"수"}
-    branch_to_element = {"자":"수","축":"토","인":"목","묘":"목","진":"토","사":"화","오":"화","미":"토","신":"금","유":"금","술":"토","해":"수"}
-
-    # 일간 기준 성격
     day_element = stem_to_element[day_stem]
+
     element_report = {
         "목":{"성격":"끊임없는 성장과 도전을 추구하는 타입. 모험과 개척을 즐깁니다.",
               "연애":"자유롭고 열정적인 연애를 즐깁니다.",
