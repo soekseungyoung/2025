@@ -48,7 +48,21 @@ with st.form("user_form"):
     name = st.text_input("이름을 입력하세요")
     gender = st.radio("성별을 선택하세요", ["여자", "남자"])
     birth_date = st.date_input("생년월일", min_value=datetime(1900,1,1), max_value=datetime.today())
-    birth_time = st.time_input("출생 시간")
+    
+    # 생시 입력 여부 선택
+    enter_hour = st.radio("출생 시간을 입력하시겠습니까?", ["입력하지 않음", "입력함"])
+    
+    birth_hour = None
+    if enter_hour == "입력함":
+        # 생시 선택 (2시간 단위)
+        hour_options = [
+            "23:00~01:00 (자시)", "01:00~03:00 (축시)", "03:00~05:00 (인시)", 
+            "05:00~07:00 (묘시)", "07:00~09:00 (진시)", "09:00~11:00 (사시)", 
+            "11:00~13:00 (오시)", "13:00~15:00 (미시)", "15:00~17:00 (신시)", 
+            "17:00~19:00 (유시)", "19:00~21:00 (술시)", "21:00~23:00 (해시)"
+        ]
+        birth_hour = st.selectbox("출생 시간을 선택하세요", hour_options)
+    
     submitted = st.form_submit_button("결과 보기")
 
 # -------------------- 천간/지지 --------------------
@@ -59,7 +73,6 @@ stem_to_element = {"갑":"목","을":"목","병":"화","정":"화","무":"토","
 # -------------------- 사주풀이 --------------------
 if submitted:
     year, month, day = birth_date.year, birth_date.month, birth_date.day
-    hour = birth_time.hour
 
     # 연주
     year_stem = heavenly_stems[(year-4)%10]
@@ -74,9 +87,14 @@ if submitted:
     day_branch = earthly_branches[(year + month + day)%12]
 
     # 시주
-    hour_branch_index = (hour+1)//2 % 12
-    hour_branch = earthly_branches[hour_branch_index]
-    hour_stem = heavenly_stems[(hour_branch_index + heavenly_stems.index(day_stem))%10]
+    if birth_hour is not None:
+        hour_index = hour_options.index(birth_hour)
+        hour_branch_index = hour_index % 12
+        hour_branch = earthly_branches[hour_branch_index]
+        hour_stem = heavenly_stems[(hour_branch_index + heavenly_stems.index(day_stem))%10]
+    else:
+        hour_stem = "미입력"
+        hour_branch = "미입력"
 
     # 오행 분석
     day_element = stem_to_element[day_stem]
@@ -122,7 +140,6 @@ if submitted:
         <h3>🔮 {name}님의 웹툰형 사주 리포트</h3>
         <p><b>성별:</b> {gender}</p>
         <p><b>생년월일:</b> {birth_date.strftime('%Y-%m-%d')}</p>
-        <p><b>출생시각:</b> {birth_time.strftime('%H:%M')}</p>
         <hr>
         <p><b>사주팔자:</b><br>
            {year_stem}{year_branch} / {month_stem}{month_branch} / {day_stem}{day_branch} / {hour_stem}{hour_branch}
@@ -138,7 +155,4 @@ if submitted:
         <p>{report['연애']}</p>
         <h3>💰 재물운</h3>
         <p>{report['재물']}</p>
-        <h3>📖 웹툰 캐릭터</h3>
-        <p>{report['웹툰']}</p>
-    </div>
-    """, unsafe_allow_html=True)
+        <h3>📖 웹
