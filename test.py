@@ -1,6 +1,5 @@
 import streamlit as st
 from datetime import datetime
-from lunardate import LunarDate
 
 # -------------------- 페이지 설정 --------------------
 st.set_page_config(page_title="내가 웹툰에 들어간다면?", page_icon="📖", layout="centered")
@@ -59,22 +58,20 @@ stem_to_element = {"갑":"목","을":"목","병":"화","정":"화","무":"토","
 
 # -------------------- 사주풀이 --------------------
 if submitted:
-    # 음력 변환
-    lunar = LunarDate.fromSolarDate(birth_date.year, birth_date.month, birth_date.day)
-    year, month, day = lunar.year, lunar.month, lunar.day
+    year, month, day = birth_date.year, birth_date.month, birth_date.day
     hour = birth_time.hour
 
     # 연주 계산
     year_stem = heavenly_stems[(year-4)%10]
     year_branch = earthly_branches[(year-4)%12]
 
-    # 월주 계산 (간단화, 실제 음력 기준)
-    month_stem = heavenly_stems[(year_stem_index:=heavenly_stems.index(year_stem))*2 + month % 10 %10]
+    # 월주 계산 (단순화)
+    month_stem = heavenly_stems[(year + month)%10]
     month_branch = earthly_branches[(month+1)%12]
 
-    # 일주 계산
-    day_stem = heavenly_stems[(year*365 + month*30 + day)%10]
-    day_branch = earthly_branches[(year*365 + month*30 + day)%12]
+    # 일주 계산 (단순화)
+    day_stem = heavenly_stems[(year + month + day)%10]
+    day_branch = earthly_branches[(year + month + day)%12]
 
     # 시주 계산
     hour_branch_index = (hour+1)//2 % 12
