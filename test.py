@@ -4,46 +4,46 @@ from datetime import datetime
 # -------------------- 페이지 설정 --------------------
 st.set_page_config(page_title="내가 웹툰에 들어간다면?", page_icon="📖", layout="centered")
 
-# -------------------- CSS 배경 + 스타일 --------------------
+# -------------------- CSS 스타일 --------------------
 st.markdown("""
 <style>
 .stApp {
-    background-color: black;
-    background-image: radial-gradient(circle, #FFD700 1px, transparent 1px);
-    background-size: 20px 20px;
-    color: #f5f5dc;
+    background-color: #0a0a0a;
+    color: #FFD700;
+    font-family: 'Arial', sans-serif;
 }
 .title {
-    font-size: 42px;
-    color: #FFD700;
+    font-size: 48px;
     text-align: center;
-    margin-top: 30px;
-    text-shadow: 0 0 15px #FFD700;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #FFD700;
+    text-shadow: 0 0 20px #FFD700;
 }
 .report {
-    position: relative;
-    z-index: 1;
-    background: rgba(20,20,20,0.85);
+    background: rgba(20,20,20,0.9);
     border: 2px solid #FFD700;
-    border-radius: 10px;
-    padding: 25px;
+    border-radius: 15px;
+    padding: 30px;
     margin-top: 30px;
-    font-size: 18px;
-    line-height: 1.7;
-    box-shadow: 0 0 20px rgba(255,215,0,0.5);
+    line-height: 1.8;
+    box-shadow: 0 0 25px rgba(255,215,0,0.5);
 }
 .report h3 {
     color: #FFD700;
-    text-shadow: 0 0 6px #FFD700;
+    text-shadow: 0 0 10px #FFD700;
+}
+hr {
+    border: 1px solid #FFD700;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # -------------------- 제목 --------------------
-st.markdown('<h1 class="title">내가 웹툰에 들어간다면?</h1>', unsafe_allow_html=True)
-st.write("✨ 황금빛 별이 반짝이는 실제 사주풀이로 당신의 웹툰 캐릭터 운명을 알려드립니다 ✨")
+st.markdown('<div class="title">내가 웹툰에 들어간다면?</div>', unsafe_allow_html=True)
+st.write("✨ 웅장한 황금빛 사주풀이로 당신의 웹툰 캐릭터 운명을 확인하세요 ✨")
 
-# -------------------- 입력폼 --------------------
+# -------------------- 입력 --------------------
 with st.form("user_form"):
     name = st.text_input("이름을 입력하세요")
     gender = st.radio("성별을 선택하세요", ["여자", "남자"])
@@ -61,19 +61,19 @@ if submitted:
     year, month, day = birth_date.year, birth_date.month, birth_date.day
     hour = birth_time.hour
 
-    # 연주 계산
+    # 연주
     year_stem = heavenly_stems[(year-4)%10]
     year_branch = earthly_branches[(year-4)%12]
 
-    # 월주 계산 (단순화)
+    # 월주 (단순화)
     month_stem = heavenly_stems[(year + month)%10]
     month_branch = earthly_branches[(month+1)%12]
 
-    # 일주 계산 (단순화)
+    # 일주 (단순화)
     day_stem = heavenly_stems[(year + month + day)%10]
     day_branch = earthly_branches[(year + month + day)%12]
 
-    # 시주 계산
+    # 시주
     hour_branch_index = (hour+1)//2 % 12
     hour_branch = earthly_branches[hour_branch_index]
     hour_stem = heavenly_stems[(hour_branch_index + heavenly_stems.index(day_stem))%10]
@@ -82,34 +82,34 @@ if submitted:
     day_element = stem_to_element[day_stem]
 
     element_report = {
-        "목":{"성격":"끊임없는 성장과 도전을 추구하는 타입. 모험과 개척을 즐깁니다.",
+        "목":{"성격":"끊임없는 성장과 도전을 추구하며, 모험과 개척을 즐기는 성격입니다.",
               "연애":"자유롭고 열정적인 연애를 즐깁니다.",
-              "재물":"계획적 투자와 노력이 재물운으로 이어집니다.",
-              "현재":"새로운 기회가 다가오는 시기입니다.",
-              "미래":"큰 성취를 이루고 지도자적 위치에 설 가능성이 큽니다.",
+              "재물":"계획적 투자와 꾸준한 노력이 재물운으로 이어집니다.",
+              "현재":"새로운 기회와 모험이 다가오는 시기입니다.",
+              "미래":"큰 성취를 이루며 지도자적 위치에 설 가능성이 큽니다.",
               "웹툰":"모험가, 도전적인 주인공"},
-        "화":{"성격":"열정과 추진력이 강하며, 감정에 솔직합니다.",
-              "연애":"불꽃같은 연애를 하며 상대에게 강한 인상을 남깁니다.",
-              "재물":"도전적 투자가 좋은 결과를 가져올 수 있습니다.",
-              "현재":"원하는 목표를 향해 돌진하는 시기입니다.",
-              "미래":"큰 성공을 이루지만 조급함을 다스려야 합니다.",
-              "웹툰":"불꽃 전사, 액션의 중심 인물"},
-        "토":{"성격":"안정적이며 성실합니다. 신뢰와 믿음을 줍니다.",
+        "화":{"성격":"열정과 추진력이 강하며, 감정에 솔직한 타입입니다.",
+              "연애":"강렬하고 불꽃같은 연애를 합니다.",
+              "재물":"도전적인 투자와 노력이 재물로 이어집니다.",
+              "현재":"목표를 향해 강하게 나아가는 시기입니다.",
+              "미래":"큰 성공을 이루지만 조급함을 조절해야 합니다.",
+              "웹툰":"불꽃 전사, 액션 중심 인물"},
+        "토":{"성격":"안정적이며 성실하고 신뢰를 주는 타입입니다.",
               "연애":"편안하고 안정적인 관계를 선호합니다.",
               "재물":"꾸준한 노력이 재물로 이어집니다.",
               "현재":"성실함이 인정받고 안정적인 흐름이 이어집니다.",
               "미래":"오랫동안 존경받는 조언자나 멘토가 될 수 있습니다.",
               "웹툰":"지혜로운 조력자, 든든한 멘토"},
-        "금":{"성격":"냉철하고 결단력 있으며 카리스마가 있습니다.",
+        "금":{"성격":"냉철하고 결단력이 있으며, 카리스마가 있는 타입입니다.",
               "연애":"매력적이지만 차가운 인상을 줄 수 있습니다.",
               "재물":"권위와 명예를 얻으며 재물운도 좋습니다.",
               "현재":"목표를 향해 집중할 수 있는 시기입니다.",
               "미래":"강렬한 인상을 남기며 중요한 위치에 설 수 있습니다.",
               "웹툰":"강력한 라이벌, 카리스마 캐릭터"},
-        "수":{"성격":"지혜롭고 신비로우며 직관력이 뛰어납니다.",
+        "수":{"성격":"지혜롭고 신비로우며 직관력이 뛰어난 타입입니다.",
               "연애":"상대의 마음을 잘 읽고 이해합니다.",
-              "재물":"지혜로운 선택이 재물로 이어집니다.",
-              "현재":"직관이 빛나고 새로운 아이디어가 떠오르는 시기입니다.",
+              "재물":"현명한 선택이 재물로 이어집니다.",
+              "현재":"직관과 아이디어가 빛나는 시기입니다.",
               "미래":"지혜와 경험을 바탕으로 특별한 길을 걸어갑니다.",
               "웹툰":"비밀을 간직한 현자, 신비로운 인물"}
     }
