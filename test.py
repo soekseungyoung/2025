@@ -22,11 +22,11 @@ st.markdown("""
     text-shadow: 0 0 20px #FFD700;
 }
 .report {
-    background: rgba(20,20,20,0.95);
     border-radius: 15px;
     padding: 30px;
     margin-top: 30px;
     line-height: 1.8;
+    position: relative;
 }
 .report h3 {
     color: #FFD700;
@@ -34,6 +34,23 @@ st.markdown("""
 }
 hr {
     border: 1px solid #FFD700;
+}
+/* 불꽃 느낌 */
+.report::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 15px;
+    z-index: -1;
+    animation: flame 2s infinite alternate;
+}
+@keyframes flame {
+    0% { box-shadow: 0 0 20px #FF4500, 0 0 40px #FFA500; }
+    50% { box-shadow: 0 0 35px #FF6347, 0 0 55px #FFD700; }
+    100% { box-shadow: 0 0 20px #FF4500, 0 0 40px #FFA500; }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -67,7 +84,7 @@ element_report = {
           "재물":"창의적 사업과 도전적 투자가 재물운을 상승시키리라. 기회를 놓치지 말 것이니라!",
           "현재":"목표를 향해 돌진할 시기이니, 에너지를 아낌없이 쏟으리라!",
           "미래":"큰 성공을 거두겠지만, 조급함을 다스려야 장기적 성취가 가능하리라!",
-          "웹툰":"불꽃 전사, 액션 중심에서 모든 갈등을 휘어잡는 캐릭터이리라!"},
+          "웹툰":"불꽃 전사, 액션의 중심에서 모든 갈등을 휘어잡는 캐릭터이리라!"},
     "토":{"성격":"안정적이고 든든한 자여, 주변에 신뢰를 주고 버팀목이 되리라!",
           "연애":"편안하고 안정적인 관계를 선호하니, 상대와 함께 성장하는 사랑을 이어가리라!",
           "재물":"꾸준한 노력과 성실함으로 재물운이 탄탄하리라. 장기적 안정성을 중시하리라!",
@@ -108,14 +125,13 @@ if submitted:
     day_element = stem_to_element[day_stem]
     report = element_report[day_element]
 
-    # 랜덤 효과
-    border_colors = ["#FFD700", "#FFAA00", "#FFDD55"]
-    shadow_colors = ["0 0 25px #FFD700", "0 0 25px #FFAA00", "0 0 25px #FFDD55"]
-    border_color = random.choice(border_colors)
-    shadow_color = random.choice(shadow_colors)
+    # 랜덤 효과 색
+    border_color = random.choice(["#FFD700", "#FFAA00", "#FF5500"])
+    shadow_color = random.choice(["0 0 25px #FFD700", "0 0 25px #FFAA00", "0 0 25px #FF5500"])
+    bg_color = random.choice(["rgba(20,20,20,0.95)", "rgba(30,10,0,0.95)", "rgba(10,30,0,0.95)"])
 
     st.markdown(f"""
-    <div class="report" style="border: 2px solid {border_color}; box-shadow: {shadow_color};">
+    <div class="report" style="border:2px solid {border_color}; box-shadow:{shadow_color}; background:{bg_color};">
         <h3>🔮 {name}님의 판타지 웹툰형 사주 리포트</h3>
         <p><b>성별:</b> {gender}</p>
         <p><b>생년월일:</b> {birth_date.strftime('%Y-%m-%d')}</p>
