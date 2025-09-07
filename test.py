@@ -14,28 +14,30 @@ st.markdown("""
     font-family: 'Arial', sans-serif;
 }
 .title {
-    font-size: 48px;
+    font-size: 56px;
     text-align: center;
     margin-top: 20px;
     font-weight: bold;
     color: #FFD700;
-    text-shadow: 0 0 20px #FFD700;
+    text-shadow: 0 0 25px #FFD700;
 }
 .report {
     background: rgba(20,20,20,0.95);
-    border: 2px solid #FFD700;
-    border-radius: 15px;
-    padding: 30px;
+    border: 3px solid #FFD700;
+    border-radius: 20px;
+    padding: 40px;
     margin-top: 30px;
-    line-height: 1.8;
-    box-shadow: 0 0 25px rgba(255,215,0,0.5);
+    line-height: 2.0;
+    box-shadow: 0 0 40px rgba(255,215,0,0.7);
+    font-size: 20px;
 }
 .report h3 {
+    font-size: 28px;
     color: #FFD700;
-    text-shadow: 0 0 10px #FFD700;
+    text-shadow: 0 0 15px #FFD700;
 }
 hr {
-    border: 1px solid #FFD700;
+    border: 2px solid #FFD700;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -124,8 +126,12 @@ if submitted:
     element = stem_to_element[day_stem]
     report = element_report[element]
 
+    # -------------------- 음악 --------------------
+    st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", format="audio/mp3")
+
+    # -------------------- 리포트 출력 --------------------
     st.markdown(f"""
-    <div class="report" style="border-color:{effect_color}; box-shadow:0 0 25px {effect_color};">
+    <div class="report" style="border-color:{effect_color}; box-shadow:0 0 40px {effect_color};">
         <h3>🌌 {name}님의 판타지 사주 리포트 🌌</h3>
         <p><b>사주 구성:</b> {year_stem}{year_branch}년, {month_stem}{month_branch}월, {day_stem}{day_branch}일</p>
         <hr>
