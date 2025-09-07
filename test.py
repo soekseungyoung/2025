@@ -57,7 +57,7 @@ heavenly_stems = ["갑","을","병","정","무","기","경","신","임","계"]
 earthly_branches = ["자","축","인","묘","진","사","오","미","신","유","술","해"]
 stem_to_element = {"갑":"목","을":"목","병":"화","정":"화","무":"토","기":"토","경":"금","신":"금","임":"수","계":"수"}
 
-# -------------------- 결과값 (주신 그대로) --------------------
+# -------------------- 판타지 웹툰 스타일 사주풀이 --------------------
 element_report = {
     "목":{
         "성격":"당신은 끊임없이 성장과 탐험을 추구하는 인물입니다. 낯선 길을 두려워하지 않고, 새로운 세계를 열며 주변에 영감을 줍니다.",
@@ -101,11 +101,11 @@ element_report = {
     }
 }
 
-# -------------------- 무작위 색상 효과 --------------------
+# -------------------- 무지개 색상 효과 --------------------
 colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
 effect_color = random.choice(colors)
 
-# -------------------- 결과 출력 --------------------
+# -------------------- 결과 계산 및 출력 --------------------
 if submitted:
     year, month, day = birth_date.year, birth_date.month, birth_date.day
 
@@ -124,6 +124,9 @@ if submitted:
     # 오행
     element = stem_to_element[day_stem]
     report = element_report[element]
+
+    # -------------------- 음악 --------------------
+    st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", format="audio/mp3")
 
     # -------------------- 리포트 출력 --------------------
     st.markdown(f"""
